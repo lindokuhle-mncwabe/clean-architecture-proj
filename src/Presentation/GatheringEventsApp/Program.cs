@@ -1,6 +1,6 @@
 using System;
 
-namespace dotnetcore
+namespace GatheringEventsApp
 {
     class Program
     {

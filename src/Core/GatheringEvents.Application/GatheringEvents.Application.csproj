@@ -11,6 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="../Gathering.Domain/Gathering.Domain.csproj" />
+        <ProjectReference Include="../GatheringEvents.Domain/GatheringEvents.Domain.csproj" />
     </ItemGroup>
 </Project>

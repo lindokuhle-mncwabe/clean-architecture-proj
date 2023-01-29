@@ -7,13 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1EBC13A9-439
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{73D22024-3E96-4B33-9DC3-9B5DD15A7B7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatheringApp", "src\Presentation\GatheringApp\GatheringApp.csproj", "{E98BE217-9606-47FF-B6B9-90D33CF0C78B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatheringApp", "src\Presentation\GatheringEventsApp\GatheringEventsApp.csproj", "{E98BE217-9606-47FF-B6B9-90D33CF0C78B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{33E77A20-D6B8-46B5-A626-4285A82FDFAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gathering.Domain", "src\Core\Gathering.Domain\Gathering.Domain.csproj", "{697BDFAF-8A4B-4FD2-9B6E-5B3D3D30D570}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gathering.Domain", "src\Core\GatheringEvents.Domain\GatheringEvents.Domain.csproj", "{697BDFAF-8A4B-4FD2-9B6E-5B3D3D30D570}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gathering.Application", "src\Core\Gathering.Application\Gathering.Application.csproj", "{DAE6E241-D08E-4186-BD45-C550341C92B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gathering.Application", "src\Core\GatheringEvents.Application\GatheringEvents.Application.csproj", "{DAE6E241-D08E-4186-BD45-C550341C92B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
