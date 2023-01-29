@@ -19,13 +19,13 @@ public sealed class ScheduleGatheringHandler
         int? InvitationValidBeforeInHours) : IRequest;
 
     // Handler
-    internal sealed class Handle : IRequestHandler<ScheduleGatheringCommand>
+    internal sealed class Handler : IRequestHandler<ScheduleGatheringCommand>
     {
         // private readonly IMemberRepository _memberRepository;
         // private readonly IGatheringRepositor _gatheringRepository;
         // private readonly IUnitOfWork _unitOfWork;
 
-        public ScheduleGatheringHandler(
+        public Handler(
             // IMemberRepository memberRepository,
             // IGatheringRepository gatheringRepository,
             // IUnitOfWork unitOfWork
@@ -38,7 +38,7 @@ public sealed class ScheduleGatheringHandler
 
         public async Task<Unit> Handle(ScheduleGatheringCommand reqest, CancellationToken cancellationToke)
         {
-            return Unity.Value;
+            throw new NotImplementedException();
         }
     }
 
