@@ -7,13 +7,15 @@ public class Gathering
 {
     #region Construtor
 
-    public Gathering(
+    private Gathering(
         Guid id,
         Member owner,
         GatheringType type,
         DateTime scheduledAtUtc,
         string name,
-        string location)
+        string location,
+        int? maximumNumberOfAttendees,
+        int? invitationValidBeforeInHours)
     {
         Id = id;
         Owner = owner;
@@ -21,20 +23,23 @@ public class Gathering
         ScheduledAtUtc = scheduledAtUtc;
         Name = name;
         Location = location;
+        MaximumNumberOfAttendees = maximumNumberOfAttendees;
+        InvitationValidBeforeInHours = invitationValidBeforeInHours;
     }
 
     #endregion
    
     #region Class Props
 
-    public Guid Id { get; set; }
-    public Member Owner { get; set; } = new ();
-    public GatheringType Type { get; set; } = new ();
-    public string Name { get; set; } = string.Empty;
-    public DateTime ScheduledAtUtc { get; set; }
-    public string Location { get; set; } = "TBC";
-    public int? MaximumNumberOfAttendees { get; set; }
-    public DateTime? InvitationExpireAtUtc { get; set; }
+    public Guid Id { get; private set; }
+    public Member Owner { get; private set; } = new ();
+    public GatheringType Type { get; private set; } = new ();
+    public string Name { get; private set; } = string.Empty;
+    public DateTime ScheduledAtUtc { get; private set; }
+    public string Location { get; private set; } = "TBC";
+    public int? MaximumNumberOfAttendees { get; private set; }
+    public int? InvitationValidBeforeInHours { get; private set; }
+    public DateTime? InvitationExpireAtUtc { get; private set; }
     public int NumberOfAttendees { get; set; }
     public List<Attendee> Attendees { get; set; } = new List<Attendee>();
     public List<Invitation> Invitations { get; set; } = new List<Invitation>();
@@ -43,7 +48,7 @@ public class Gathering
 
     #region Class Methods
 
-    public static Gathering Schedule(
+    public static Gathering ScheduleNew(
         Guid id,
         Member owner,
         GatheringType type,
@@ -59,7 +64,9 @@ public class Gathering
                 type,
                 scheduledAtUtc,
                 name,
-                location);
+                location,
+                maximumNumberOfAttendees,
+                invitationValidBeforeInHours);
 
         switch (gathering.Type)
         {

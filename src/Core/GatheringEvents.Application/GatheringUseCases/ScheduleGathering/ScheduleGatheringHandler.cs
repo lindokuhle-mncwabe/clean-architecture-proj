@@ -39,22 +39,28 @@ public sealed class ScheduleGatheringHandler
 
         public async Task<Unit> Handle(ScheduleGatheringCommand request, CancellationToken cancelToken)
         {
-            var member = await _memberRepository.GetByIdAsync(request.MemberId, cancelToken); 
+            var member = 
+                await _memberRepository.GetByIdAsync(
+                    request.MemberId, 
+                    cancelToken); 
 
             if (member is null) return Unit.Value;
 
-            var gathering = new Gathering(
+            var gathering = Gathering.ScheduleNew(
                 Guid.NewGuid(),
                 member,
                 request.Type,
                 request.ScheduledAtUtc,
                 request.Name,
-                request.Location ?? "TBC");
+                request.Location ?? "TBC",
+                request.MaximumNumberOfAttendees,
+                request.InvitationValidBeforeInHours);
+            
+            _gatheringRepository.Add(gathering);
+            
+            await _unitOfWork.SaveChangesAsync(cancelToken);
 
-
-
-            // Todo: return result    
-            throw new NotImplementedException();
+            return Unit.Value;
         }
     }
 
