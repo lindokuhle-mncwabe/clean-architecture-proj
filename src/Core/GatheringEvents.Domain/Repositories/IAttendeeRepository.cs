@@ -1,4 +1,4 @@
-namespace GatheringEvents.Domain.Repositores;
+namespace GatheringEvents.Domain.Repositories;
 
 public interface IAttendeeRepository
 {

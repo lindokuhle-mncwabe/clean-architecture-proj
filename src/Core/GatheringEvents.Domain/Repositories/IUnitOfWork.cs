@@ -1,5 +1,6 @@
 namespace GatheringEvents.Domain.Repositories;
-public interface IInvitationRepository
+
+public interface IUnitOfWork
 {
     
 }

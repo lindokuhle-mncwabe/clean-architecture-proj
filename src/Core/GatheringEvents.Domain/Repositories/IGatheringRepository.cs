@@ -1,8 +1,8 @@
 using GatheringEvents.Domain.Entities;
 
-namespace GatheringEvents.Domain.Repositores;
+namespace GatheringEvents.Domain.Repositories;
 
-public interface IGatheringRepositor
+public interface IGatheringRepository
 {
     void Add(Gathering gathering);
 }

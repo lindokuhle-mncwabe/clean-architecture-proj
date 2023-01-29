@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using GatheringEvents.Domain.Entities;
+using GatheringEvents.Domain.Repositories;
 
 namespace GatheringEvents.Application.GatheringUseCases.ScheduleGathering;
 
@@ -22,7 +23,7 @@ public sealed class ScheduleGatheringHandler
     internal sealed class Handler : IRequestHandler<ScheduleGatheringCommand>
     {
         private readonly IMemberRepository _memberRepository;
-        private readonly IGatheringRepositor _gatheringRepository;
+        private readonly IGatheringRepository _gatheringRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public Handler(
@@ -38,7 +39,7 @@ public sealed class ScheduleGatheringHandler
 
         public async Task<Unit> Handle(ScheduleGatheringCommand request, CancellationToken cancelToken)
         {
-            var member = _memberRepository.GetByIdAsync(request.MemberId, cancelToken); 
+            var member = await _memberRepository.GetByIdAsync(request.MemberId, cancelToken); 
 
             if (member is null) return Unit.Value;
 
@@ -48,7 +49,7 @@ public sealed class ScheduleGatheringHandler
                 request.Type,
                 request.ScheduledAtUtc,
                 request.Name,
-                request.Location);
+                request.Location ?? "TBC");
 
 
 
