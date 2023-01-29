@@ -5,8 +5,7 @@ namespace GatheringEvents.Domain.Entities;
 
 public class Gathering
 {
-    #region Construtor
-
+    #region ~Construtor
     private Gathering(
         Guid id,
         Member owner,
@@ -26,11 +25,13 @@ public class Gathering
         MaximumNumberOfAttendees = maximumNumberOfAttendees;
         InvitationValidBeforeInHours = invitationValidBeforeInHours;
     }
-
     #endregion
    
-    #region Class Props
+    #region ~ClassFields
+    private readonly List<Invitation> _invitations = new();
+    #endregion
 
+    #region ~ClassProps
     public Guid Id { get; private set; }
     public Member Owner { get; private set; } = new ();
     public GatheringType Type { get; private set; } = new ();
@@ -42,12 +43,10 @@ public class Gathering
     public DateTime? InvitationExpireAtUtc { get; private set; }
     public int NumberOfAttendees { get; set; }
     public List<Attendee> Attendees { get; set; } = new List<Attendee>();
-    public List<Invitation> Invitations { get; set; } = new List<Invitation>();
-    
+    public IReadOnlyCollection<Invitation> Invitations => _invitations;    
     #endregion
 
-    #region Class Methods
-
+    #region ~ClassMethods
     public static Gathering ScheduleNew(
         Guid id,
         Member owner,
@@ -86,6 +85,23 @@ public class Gathering
 
         return gathering;
     }
+    
+    public Invitation AddNewInvitation(Member member)
+    {
+        if (Owner.Id == member.Id) 
+            throw new InvalidOperationException("Cannot send invitation to gathering owner.");
 
+        if (ScheduledAtUtc < DateTime.UtcNow)
+            throw new InvalidOperationException("Cannot send invitation for gathering in the past.");
+
+        var invitation = new Invitation(
+            Guid.NewGuid(),
+            member,
+            this);
+
+        _invitations.Add(invitation);
+
+        return invitation;
+    }
     #endregion
 }
