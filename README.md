@@ -18,7 +18,7 @@ Presentation
 
 Here's a visual representation of the Clean Architecture:
 
-{// add clean architecture email here}
+{// add clean architecture image here //}
 
 
 ## Domain Layer
