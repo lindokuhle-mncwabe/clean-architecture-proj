@@ -53,9 +53,40 @@ public sealed class AcceptInvitationHandler
                 await _memberRepository.GetByIdAsync(
                     invitation.MemberId, 
                     cancellationToken);
-        
 
+            var gathering = 
+                await _gatheringRepository.GetByIdWithOwnerAsync(
+                    invitation.gatheringId,
+                    cancellationToken);
+
+            if (member is null || gathering is null) return Unit.Value;
             
+            var fullyBooked = 
+                gathering.Type == GatheringType.WithFixedNumberOfAttendees
+                && gathering.NumberOfAttendees == gathering.MaximumNumberOfAttendees;
+
+            var expired = 
+                gathering.Type == GatheringType.WithExpirationForInvitation
+                && gathering.InvitationExpireAtUtc < DateTime.UtcNow;
+
+            if (fullyBooked || expired)
+            {
+                invitation.Status = InvitationStatus.Expired;
+                invitation.UpdatedOnUtc = DateTime.UtcNow;
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                return Unit.Value;
+            }         
+
+            invitation.Status = InvitationStatus.Accepted;
+            invitation.UpdatedOnUtc = DateTime.UtcNow;
+
+            var attendee = new Attendee
+            {
+                MemberId = invitation.MemberId
+            };
+
             throw new NotImplementedException();
         }
     }
