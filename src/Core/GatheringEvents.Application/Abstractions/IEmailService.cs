@@ -9,4 +9,5 @@ namespace GatheringEvents.Application.Abstractions;
 public interface IEmailService
 {
     Task SendInvitationEmail(Member member, Gathering gathering, CancellationToken cancelToken);
+    Task SendInvitationAcceptedEmail(Gathering gathering, CancellationToken cancelToken);
 }

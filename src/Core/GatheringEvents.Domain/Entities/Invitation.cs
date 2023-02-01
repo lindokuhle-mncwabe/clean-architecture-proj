@@ -22,9 +22,9 @@ public class Invitation
     public Guid Id { get; private set; }
     public Guid GatheringId { get; private set; }
     public Guid MemberId { get; private set; }
-    public InvitationStatus Status { get; private set; }
+    public InvitationStatus Status { get; set; }
     public DateTime CreatedOnUtc { get; private set; }
-    public DateTime? UpdatedOnUtc { get; private set; }
+    public DateTime? UpdatedOnUtc { get; set; }
     #endregion
 
     #region ~ClassMethods

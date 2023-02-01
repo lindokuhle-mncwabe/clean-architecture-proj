@@ -18,6 +18,7 @@ public sealed class AcceptInvitationHandler
     // Handler
     internal sealed class Handler : IRequestHandler<AcceptInvitationCommand>
     {
+        private readonly IAttendeeRepository _attendeeRepository;
         private readonly IMemberRepository _memberRepository;
         private readonly IGatheringRepository _gatheringRepository;
         private readonly IInvitationRepository _invitationRepository;
@@ -25,12 +26,14 @@ public sealed class AcceptInvitationHandler
         private readonly IEmailService _emailService;
 
         public Handler(
+            IAttendeeRepository attendeeRepository,
             IMemberRepository memberRepository,
             IGatheringRepository gatheringRepository,
             IInvitationRepository invitationRepository,
             IUnitOfWork unitOfWork,
             IEmailService emailService)
         {
+            _attendeeRepository = attendeeRepository;
             _memberRepository = memberRepository;
             _gatheringRepository = gatheringRepository;
             _invitationRepository = invitationRepository;
@@ -56,7 +59,7 @@ public sealed class AcceptInvitationHandler
 
             var gathering = 
                 await _gatheringRepository.GetByIdWithOwnerAsync(
-                    invitation.gatheringId,
+                    invitation.GatheringId,
                     cancellationToken);
 
             if (member is null || gathering is null) return Unit.Value;
@@ -84,10 +87,21 @@ public sealed class AcceptInvitationHandler
 
             var attendee = new Attendee
             {
-                MemberId = invitation.MemberId
+                MemberId = invitation.MemberId,
+                GatheringId = invitation.GatheringId,
+                CreatedOnUtc = DateTime.UtcNow   
             };
 
-            throw new NotImplementedException();
+            gathering.Attendees.Add(attendee);
+            gathering.NumberOfAttendees++;
+
+            _attendeeRepository.Add(attendee);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            await _emailService.SendInvitationAcceptedEmail(gathering, cancellationToken);
+
+            return Unit.Value;
         }
     }
 }
