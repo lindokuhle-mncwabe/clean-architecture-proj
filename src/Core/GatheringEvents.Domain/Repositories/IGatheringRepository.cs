@@ -9,5 +9,6 @@ namespace GatheringEvents.Domain.Repositories;
 public interface IGatheringRepository
 {
     Task<Gathering> GetByIdAsync(Guid gatheringId, CancellationToken cancelToken);
+    Task<Gathering> GetByIdWithOwnerAsync(Guid invitationId, CancellationToken cancelToken);
     void Add(Gathering gathering);
 }
