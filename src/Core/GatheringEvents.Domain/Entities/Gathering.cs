@@ -29,6 +29,7 @@ public class Gathering
    
     #region ~ClassFields
     private readonly List<Invitation> _invitations = new();
+    private readonly List<Attendee> _attendees = new();
     #endregion
 
     #region ~ClassProps
@@ -42,7 +43,7 @@ public class Gathering
     public int? InvitationValidBeforeInHours { get; private set; }
     public DateTime? InvitationExpireAtUtc { get; private set; }
     public int NumberOfAttendees { get; set; }
-    public List<Attendee> Attendees { get; set; } = new List<Attendee>();
+    public IReadOnlyCollection<Attendee> Attendees  => _attendees;
     public IReadOnlyCollection<Invitation> Invitations => _invitations;    
     #endregion
 
@@ -102,6 +103,30 @@ public class Gathering
         _invitations.Add(invitation);
 
         return invitation;
+    }
+
+    public Attendee? AcceptInvitation(Invitation invitation)
+    {
+        var fullyBooked = 
+            Type == GatheringType.WithFixedNumberOfAttendees
+            && NumberOfAttendees == MaximumNumberOfAttendees;
+
+        var expired = 
+            Type == GatheringType.WithExpirationForInvitation
+            && InvitationExpireAtUtc < DateTime.UtcNow;
+
+        if (fullyBooked || expired) {
+            invitation.Expire();
+
+            return null;
+        }        
+
+        var attendee = invitation.Accept();           
+           
+        _attendees.Add(attendee);
+        NumberOfAttendees++;
+
+        return attendee;
     }
     #endregion
 }

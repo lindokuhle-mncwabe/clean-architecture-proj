@@ -49,8 +49,9 @@ public sealed class AcceptInvitationHandler
                     request.InvitationId, 
                     cancellationToken);
 
-            if (invitation is null || invitation.Status != InvitationStatus.Pending)
-                return Unit.Value;
+            if (invitation is null || invitation.Status != InvitationStatus.Pending) { 
+                return Unit.Value; 
+            }
 
             var member = 
                 await _memberRepository.GetByIdAsync(
@@ -62,44 +63,21 @@ public sealed class AcceptInvitationHandler
                     invitation.GatheringId,
                     cancellationToken);
 
-            if (member is null || gathering is null) return Unit.Value;
+            if (member is null || gathering is null) { 
+                return Unit.Value; 
+            }
             
-            var fullyBooked = 
-                gathering.Type == GatheringType.WithFixedNumberOfAttendees
-                && gathering.NumberOfAttendees == gathering.MaximumNumberOfAttendees;
-
-            var expired = 
-                gathering.Type == GatheringType.WithExpirationForInvitation
-                && gathering.InvitationExpireAtUtc < DateTime.UtcNow;
-
-            if (fullyBooked || expired)
-            {
-                invitation.Status = InvitationStatus.Expired;
-                invitation.UpdatedOnUtc = DateTime.UtcNow;
-
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-                return Unit.Value;
-            }         
-
-            invitation.Status = InvitationStatus.Accepted;
-            invitation.UpdatedOnUtc = DateTime.UtcNow;
-
-            var attendee = new Attendee
-            {
-                MemberId = invitation.MemberId,
-                GatheringId = invitation.GatheringId,
-                CreatedOnUtc = DateTime.UtcNow   
-            };
-
-            gathering.Attendees.Add(attendee);
-            gathering.NumberOfAttendees++;
-
-            _attendeeRepository.Add(attendee);
+            var attendee = gathering.AcceptInvitation(invitation);
+            
+            if (attendee is not null) { 
+                _attendeeRepository.Add(attendee); 
+            }
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            await _emailService.SendInvitationAcceptedEmail(gathering, cancellationToken);
+            if (invitation.Status == InvitationStatus.Accepted) {
+                await _emailService.SendInvitationAcceptedEmail(gathering, cancellationToken); 
+            } 
 
             return Unit.Value;
         }

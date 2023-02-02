@@ -45,7 +45,9 @@ public sealed class ScheduleGatheringHandler
                     request.MemberId, 
                     cancelToken); 
 
-            if (member is null) return Unit.Value;
+            if (member is null) {
+                return Unit.Value;
+            }
 
             var gathering = Gathering.ScheduleNew(
                 Guid.NewGuid(),
