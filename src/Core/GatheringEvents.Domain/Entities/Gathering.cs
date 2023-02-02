@@ -3,9 +3,10 @@ using System.Collections.Generic;
 
 namespace GatheringEvents.Domain.Entities;
 
-public class Gathering
+public sealed class Gathering : Entity
 {
     #region ~Construtor
+
     private Gathering(
         Guid id,
         Member owner,
@@ -15,8 +16,8 @@ public class Gathering
         string location,
         int? maximumNumberOfAttendees,
         int? invitationValidBeforeInHours)
+        : base(id)
     {
-        Id = id;
         Owner = owner;
         Type = type;
         ScheduledAtUtc = scheduledAtUtc;
@@ -25,17 +26,18 @@ public class Gathering
         MaximumNumberOfAttendees = maximumNumberOfAttendees;
         InvitationValidBeforeInHours = invitationValidBeforeInHours;
     }
+    
     #endregion
    
-    #region ~ClassFields
+    #region ~Fields
     private readonly List<Invitation> _invitations = new();
     private readonly List<Attendee> _attendees = new();
     #endregion
 
-    #region ~ClassProps
-    public Guid Id { get; private set; }
-    public Member Owner { get; private set; } = new ();
-    public GatheringType Type { get; private set; } = new ();
+    #region ~Props
+    
+    public Member Owner { get; private set; }
+    public GatheringType Type { get; private set; }
     public string Name { get; private set; } = string.Empty;
     public DateTime ScheduledAtUtc { get; private set; }
     public string Location { get; private set; } = "TBC";
@@ -47,7 +49,7 @@ public class Gathering
     public IReadOnlyCollection<Invitation> Invitations => _invitations;    
     #endregion
 
-    #region ~ClassMethods
+    #region ~Methods
     public static Gathering ScheduleNew(
         Guid id,
         Member owner,

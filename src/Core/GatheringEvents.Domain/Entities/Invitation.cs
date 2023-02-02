@@ -2,32 +2,35 @@ using System;
 
 namespace GatheringEvents.Domain.Entities;
 
-public class Invitation
+public sealed class Invitation : Entity
 {
     #region ~Construtor
+
     internal Invitation(    
         Guid id,
         Member member,
-        Gathering gathering)
+        Gathering gathering) : base(id)
     {
-        Id = id;
-        GatheringId = member.Id;
-        MemberId = gathering.Id;
+        MemberId = member.Id;
+        GatheringId = gathering.Id;
         Status = InvitationStatus.Pending;
         CreatedOnUtc = DateTime.Now;
     }
+    
     #endregion
 
-    #region ~ClassProps
-    public Guid Id { get; private set; }
+    #region ~Props
+
     public Guid GatheringId { get; private set; }
     public Guid MemberId { get; private set; }
     public InvitationStatus Status { get; private set; }
     public DateTime CreatedOnUtc { get; private set; }
     public DateTime? UpdatedOnUtc { get; private set; }
+
     #endregion
 
-    #region ~ClassMethods
+    #region ~Methods
+
     internal void Expire()
     {
         Status = InvitationStatus.Expired;
@@ -43,5 +46,6 @@ public class Invitation
 
          return attendee;
     }
+
     #endregion
 }
