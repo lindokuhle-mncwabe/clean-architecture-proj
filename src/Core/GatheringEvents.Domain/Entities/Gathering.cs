@@ -77,9 +77,8 @@ public sealed class Gathering : Entity
                 if (maximumNumberOfAttendees is null)
                 {
                     return Result<Gathering, Error>.Fail(
-                        new Error(
-                            $"{nameof(ArgumentNullException)} (Parameter `{nameof(maximumNumberOfAttendees)}`)"), 
-                        false);
+                        new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(maximumNumberOfAttendees)}`)"), 
+                        isUnhandledError: false);
                 }
                 gathering.MaximumNumberOfAttendees = maximumNumberOfAttendees;
                 break;
@@ -87,18 +86,16 @@ public sealed class Gathering : Entity
                 if (invitationValidBeforeInHours is null)
                 {
                     return Result<Gathering, Error>.Fail(
-                        new Error(
-                            $"{nameof(ArgumentNullException)} (Parameter `{nameof(invitationValidBeforeInHours)}`)"),
-                        false);
+                        new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(invitationValidBeforeInHours)}`)"),
+                        isUnhandledError: false);
                 }
                 gathering.InvitationExpireAtUtc =
                     gathering.ScheduledAtUtc.AddHours(-invitationValidBeforeInHours.Value);
                 break;
             default:
                 return Result<Gathering, Error>.Fail(
-                        new Error(
-                            $"{nameof(ArgumentOutOfRangeException)} (Parameter `{nameof(GatheringType)}`)"), 
-                        false);
+                        new Error($"{nameof(ArgumentOutOfRangeException)} (Parameter `{nameof(GatheringType)}`)"), 
+                        isUnhandledError: false);
         }
 
         return Result<Gathering, Error>.Ok(gathering);
