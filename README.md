@@ -113,3 +113,4 @@ Here is the folder structure I like to use:
 Sometimes, I will move the Presentation layer away from the actual Web API project. I do this to isolate the Controllers and enforce stricter constraints. You don't have to do this if it is too complicated for you.
 
 [Source](https://www.milanjovanovic.tech/blog/clean-architecture-folder-structure)
+DDD
