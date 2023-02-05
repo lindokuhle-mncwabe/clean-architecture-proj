@@ -54,13 +54,13 @@ public sealed class AcceptInvitationHandler
             if (invitation is null) { 
                 return Result<Attendee, Error>.Fail(
                     new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(invitation)}`)"),
-                    false);
+                    isUnhandledError: false);
             }
 
             if (invitation.Status != InvitationStatus.Pending){
                 return Result<Attendee, Error>.Fail(
                     new Error($"{nameof(InvalidOperationException)} (Parameter `{nameof(InvitationStatus)}:{invitation.Status}`)"),
-                    false);
+                    isUnhandledError: false);
             }
 
             var member = 
@@ -75,14 +75,14 @@ public sealed class AcceptInvitationHandler
 
             if (member is null) { 
                 return Result<Attendee, Error>.Fail(
-                    new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(member)}`)"),
-                    false); 
+                    new Error($"{nameof(ArgumentNullException)} (Parameter `{member}`)"),
+                    isUnhandledError: false); 
             }
             
             if (gathering is null) {
                 return Result<Attendee, Error>.Fail(
-                    new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(gathering)}`)"),
-                    false);
+                    new Error($"{nameof(ArgumentNullException)} (Parameter `{gathering}`)"),
+                    isUnhandledError: false);
             }
             
             var attendee = gathering.AcceptInvitation(invitation);
@@ -90,7 +90,7 @@ public sealed class AcceptInvitationHandler
             if (attendee is null) {
                 return Result<Attendee, Error>.Fail(
                     new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(attendee)}`)"),
-                    false);
+                    isUnhandledError: false);
             }
 
             _attendeeRepository.Add(attendee); 

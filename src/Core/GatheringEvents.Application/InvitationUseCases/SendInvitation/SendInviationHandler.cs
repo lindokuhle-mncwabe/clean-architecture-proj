@@ -55,16 +55,14 @@ public sealed class SendInvitationHandler
 
             if (member is null) { 
                 return Result<Invitation, Error>.Fail(
-                    new Error(
-                        $"{nameof(ArgumentNullException)} (Parameter `{nameof(member)}`)"),
-                    false);
+                    new Error($"{nameof(ArgumentNullException)} (Parameter `{member}`)"),
+                    isUnhandledError: false);
             }
 
             if (gathering is null) {
                 return  Result<Invitation, Error>.Fail(
-                    new Error(
-                        $"{nameof(ArgumentNullException)} (Parameter `{nameof(gathering)}`)"),
-                    false);
+                    new Error($"{nameof(ArgumentNullException)} (Parameter `{gathering}`)"),
+                    isUnhandledError: false);
             }
             var invitation = gathering.AddNewInvitation(member);    
 

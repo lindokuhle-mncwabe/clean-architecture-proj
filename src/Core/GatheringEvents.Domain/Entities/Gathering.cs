@@ -103,45 +103,6 @@ public sealed class Gathering : Entity
 
         return Result<Gathering, Error>.Ok(gathering);
     }
-
-    public static Gathering ScheduleNew(
-        Guid id,
-        Member owner,
-        GatheringType type,
-        DateTime scheduledAtUtc,
-        string name,
-        string location,
-        int? maximumNumberOfAttendees,
-        int? invitationValidBeforeInHours)
-    {
-        var gathering = new Gathering(
-                Guid.NewGuid(),
-                owner,
-                type,
-                scheduledAtUtc,
-                name,
-                location,
-                maximumNumberOfAttendees,
-                invitationValidBeforeInHours);
-
-        switch (gathering.Type)
-        {
-            case GatheringType.WithFixedNumberOfAttendees:
-                gathering.MaximumNumberOfAttendees = maximumNumberOfAttendees is null ? 
-                        throw new ArgumentNullException(nameof(maximumNumberOfAttendees)) :
-                        maximumNumberOfAttendees;
-                break;
-            case GatheringType.WithExpirationForInvitation:
-                gathering.InvitationExpireAtUtc = invitationValidBeforeInHours is null ?
-                    throw new ArgumentNullException(nameof(invitationValidBeforeInHours)) :
-                    gathering.ScheduledAtUtc.AddHours(-invitationValidBeforeInHours.Value);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(GatheringType));
-        }
-
-        return gathering;
-    }
     
     public Invitation AddNewInvitation(Member member)
     {

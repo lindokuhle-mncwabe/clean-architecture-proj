@@ -48,7 +48,7 @@ public sealed class ScheduleGatheringHandler
             if (member is null) {
                 return Result<Gathering, Error>.Fail(
                     new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(member)}`)"),
-                    false);
+                    isUnhandledError: false);
             }
 
             var result = Gathering.BuildNew(
