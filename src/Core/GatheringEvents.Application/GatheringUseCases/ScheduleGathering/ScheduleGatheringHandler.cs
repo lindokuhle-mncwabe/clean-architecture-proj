@@ -51,7 +51,7 @@ public sealed class ScheduleGatheringHandler
                     false);
             }
 
-            var result = Gathering.TryToScheduleNewGathering(
+            var result = Gathering.BuildNew(
                 Guid.NewGuid(),
                 member,
                 request.Type,

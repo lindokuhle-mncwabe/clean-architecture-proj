@@ -52,7 +52,7 @@ public sealed class Gathering : Entity
     #endregion
 
     #region ~Methods
-    public static Result<Gathering, Error> TryToScheduleNewGathering(
+    public static Result<Gathering, Error> BuildNew(
         Guid id,
         Member owner,
         GatheringType type,
