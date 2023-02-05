@@ -1,6 +1,6 @@
 using System;
 
-namespace GatheringEvents.Domain;
+namespace GatheringEvents.Domain.Types;
 
 public abstract class Entity : IEquatable<Entity>
 {

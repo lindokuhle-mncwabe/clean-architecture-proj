@@ -1,6 +1,6 @@
 using System;
 
-namespace GatheringEvents.Domain.Entities;
+namespace GatheringEvents.Domain.Types;
 
 public enum GatheringType
 {
