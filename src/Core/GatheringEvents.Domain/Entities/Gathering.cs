@@ -94,20 +94,26 @@ public sealed class Gathering : Entity
                 break;
             default:
                 return Result<Gathering, Error>.Fail(
-                        new Error($"{nameof(ArgumentOutOfRangeException)} (Parameter `{nameof(GatheringType)}`)"), 
-                        isUnhandledError: false);
+                    new Error($"{nameof(ArgumentOutOfRangeException)} (Parameter `{nameof(GatheringType)}`)"), 
+                    isUnhandledError: false);
         }
 
         return Result<Gathering, Error>.Ok(gathering);
     }
     
-    public Invitation AddNewInvitation(Member member)
+    public Result<Invitation, Error> AddNewInvitation(Member member)
     {
-        if (Owner.Id == member.Id) 
-            throw new InvalidOperationException("Cannot send invitation to gathering owner.");
+        if (Owner.Id == member.Id) {
+            return Result<Invitation, Error>.Fail(
+                new Error($"{nameof(InvalidOperationException)} - cannot invite owner (Parameter `{nameof(Owner)}`)"),
+                isUnhandledError: false);
+        }
 
-        if (ScheduledAtUtc < DateTime.UtcNow)
-            throw new InvalidOperationException("Cannot send invitation for gathering in the past.");
+        if (ScheduledAtUtc < DateTime.UtcNow) {
+            return Result<Invitation, Error>.Fail(
+                new Error($"{InvalidOperationException} - gathering in the past (Parameter `{nameof(ScheduledAtUtc)}`)"),
+                isUnhandledError: false);
+        }
 
         var invitation = new Invitation(
             Guid.NewGuid(),
@@ -116,7 +122,7 @@ public sealed class Gathering : Entity
 
         _invitations.Add(invitation);
 
-        return invitation;
+        return Result<Invitation, Error>.Ok(invitation);
     }
 
     public Attendee? AcceptInvitation(Invitation invitation)

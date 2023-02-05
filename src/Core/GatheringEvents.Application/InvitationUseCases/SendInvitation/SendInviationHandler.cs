@@ -64,15 +64,18 @@ public sealed class SendInvitationHandler
                     new Error($"{nameof(ArgumentNullException)} (Parameter `{gathering}`)"),
                     isUnhandledError: false);
             }
-            var invitation = gathering.AddNewInvitation(member);    
 
-            _invitationRepository.Add(invitation);
+            var result = gathering.AddNewInvitation(member);    
+
+            if (!result.IsSuccess) return result;
+
+            _invitationRepository.Add(result.Value);
 
             await _unitOfWork.SaveChangesAsync(cancelToken);
 
             await _emailService.SendInvitationEmail(member, gathering, cancelToken);
 
-            return Result<Invitation, Error>.Ok(invitation);
+            return Result<Invitation, Error>.Ok(result.Value);
         }
     }
 }
