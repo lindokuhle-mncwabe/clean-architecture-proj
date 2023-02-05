@@ -44,9 +44,9 @@ public sealed class Invitation : Entity
         Status = InvitationStatus.Accepted;
         UpdatedOnUtc = DateTime.UtcNow;
 
-         var attendee = new Attendee(this);
+        var attendee = new Attendee(this);
 
-         return attendee;
+        return attendee;
     }
 
     #endregion

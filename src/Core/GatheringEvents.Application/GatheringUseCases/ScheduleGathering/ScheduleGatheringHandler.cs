@@ -31,8 +31,7 @@ public sealed class ScheduleGatheringHandler
         public Handler(
             IMemberRepository memberRepository,
             IGatheringRepository gatheringRepository,
-            IUnitOfWork unitOfWork
-            )
+            IUnitOfWork unitOfWork)
         {
             _memberRepository = memberRepository;
             _gatheringRepository = gatheringRepository;
@@ -71,5 +70,4 @@ public sealed class ScheduleGatheringHandler
             return Result<Gathering, Error>.Ok(result.Value);
         }
     }
-
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 
 using GatheringEvents.Application.Abstractions;
+using GatheringEvents.Domain.Entities;
 using GatheringEvents.Domain.Repositories;
 using GatheringEvents.Domain.Types;
 
@@ -14,10 +15,10 @@ public sealed class SendInvitationHandler
     // Command
     public sealed record SendInvitationCommand(
         Guid MemberId, 
-        Guid GatheringId) : IRequest<Unit>;
+        Guid GatheringId) : IRequest<Result<Invitation, Error>>;
 
     // Handler
-    internal sealed class Handler : IRequestHandler<SendInvitationCommand>
+    internal sealed class Handler : IRequestHandler<SendInvitationCommand, Result<Invitation, Error>>
     {
 
         private readonly IMemberRepository _memberRepository;
@@ -40,7 +41,7 @@ public sealed class SendInvitationHandler
             _emailService = emailService;
         }
 
-        public async Task<Unit> Handle(SendInvitationCommand request, CancellationToken cancelToken)
+        public async Task<Result<Invitation, Error>> Handle(SendInvitationCommand request, CancellationToken cancelToken)
         {
             var member = 
                 await _memberRepository.GetByIdAsync(
@@ -52,8 +53,19 @@ public sealed class SendInvitationHandler
                     request.GatheringId,
                     cancelToken);
 
-            if (member is null || gathering is null) return Unit.Value;
+            if (member is null) { 
+                return Result<Invitation, Error>.Fail(
+                    new Error(
+                        $"{nameof(ArgumentNullException)} (Parameter `{nameof(member)}`)"),
+                    false);
+            }
 
+            if (gathering is null) {
+                return  Result<Invitation, Error>.Fail(
+                    new Error(
+                        $"{nameof(ArgumentNullException)} (Parameter `{nameof(gathering)}`)"),
+                    false);
+            }
             var invitation = gathering.AddNewInvitation(member);    
 
             _invitationRepository.Add(invitation);
@@ -62,7 +74,7 @@ public sealed class SendInvitationHandler
 
             await _emailService.SendInvitationEmail(member, gathering, cancelToken);
 
-            return Unit.Value;
+            return Result<Invitation, Error>.Ok(invitation);
         }
     }
 }
