@@ -52,6 +52,58 @@ public sealed class Gathering : Entity
     #endregion
 
     #region ~Methods
+    public static Result<Gathering, Error> TryToScheduleNewGathering(
+        Guid id,
+        Member owner,
+        GatheringType type,
+        DateTime scheduledAtUtc,
+        string name,
+        string location,
+        int? maximumNumberOfAttendees,
+        int? invitationValidBeforeInHours)
+    {
+        var gathering = new Gathering(
+                Guid.NewGuid(),
+                owner,
+                type,
+                scheduledAtUtc,
+                name,
+                location,
+                maximumNumberOfAttendees,
+                invitationValidBeforeInHours);
+        switch (gathering.Type)
+        {
+            case GatheringType.WithFixedNumberOfAttendees:
+                if (maximumNumberOfAttendees is null)
+                {
+                    return Result<Gathering, Error>.Fail(
+                        new Error(
+                            $"{nameof(ArgumentNullException)} (Parameter `{nameof(maximumNumberOfAttendees)}`)"), 
+                        false);
+                }
+                gathering.MaximumNumberOfAttendees = maximumNumberOfAttendees;
+                break;
+            case GatheringType.WithExpirationForInvitation:
+                if (invitationValidBeforeInHours is null)
+                {
+                    return Result<Gathering, Error>.Fail(
+                        new Error(
+                            $"{nameof(ArgumentNullException)} (Parameter `{nameof(invitationValidBeforeInHours)}`)"),
+                        false);
+                }
+                gathering.InvitationExpireAtUtc =
+                    gathering.ScheduledAtUtc.AddHours(-invitationValidBeforeInHours.Value);
+                break;
+            default:
+                return Result<Gathering, Error>.Fail(
+                        new Error(
+                            $"{nameof(ArgumentOutOfRangeException)} (Parameter `{nameof(GatheringType)}`)"), 
+                        false);
+        }
+
+        return Result<Gathering, Error>.Ok(gathering);
+    }
+
     public static Gathering ScheduleNew(
         Guid id,
         Member owner,
