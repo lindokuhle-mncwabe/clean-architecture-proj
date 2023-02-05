@@ -1,5 +1,7 @@
 using System;
 
+using GatheringEvents.Domain.Types;
+
 namespace GatheringEvents.Domain.Entities;
 
 public sealed class Member : Entity

@@ -5,6 +5,7 @@ using MediatR;
 
 using GatheringEvents.Domain.Entities;
 using GatheringEvents.Domain.Repositories;
+using GatheringEvents.Domain.Types;
 
 namespace GatheringEvents.Application.GatheringUseCases.ScheduleGathering;
 

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using GatheringEvents.Domain.Types;
+
 namespace GatheringEvents.Domain.Entities;
 
 public sealed class Gathering : Entity

@@ -7,7 +7,7 @@ using MediatR;
 
 using GatheringEvents.Domain.Repositories;
 using GatheringEvents.Application.Abstractions;
-using GatheringEvents.Domain.Entities;
+using GatheringEvents.Domain.Types;
 
 public sealed class AcceptInvitationHandler
 {

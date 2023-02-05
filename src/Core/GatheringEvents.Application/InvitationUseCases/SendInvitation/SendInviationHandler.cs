@@ -5,6 +5,7 @@ using MediatR;
 
 using GatheringEvents.Application.Abstractions;
 using GatheringEvents.Domain.Repositories;
+using GatheringEvents.Domain.Types;
 
 namespace GatheringEvents.Application.InvitationUseCases.SendInvitation;
 
