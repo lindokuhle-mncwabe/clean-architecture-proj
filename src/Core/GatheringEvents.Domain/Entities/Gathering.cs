@@ -111,7 +111,7 @@ public sealed class Gathering : Entity
 
         if (ScheduledAtUtc < DateTime.UtcNow) {
             return Result<Invitation, Error>.Fail(
-                new Error($"{InvalidOperationException} - gathering in the past (Parameter `{nameof(ScheduledAtUtc)}`)"),
+                new Error($"{nameof(InvalidOperationException)} - gathering in the past (Parameter `{nameof(ScheduledAtUtc)}`)"),
                 isUnhandledError: false);
         }
 

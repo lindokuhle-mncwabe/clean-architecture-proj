@@ -2,15 +2,15 @@ using System;
 
 namespace GatheringEvents.Domain.Types;
 
-public record FullName
+public record FirstName
 {
     public string Value { get; set; }
 
-    public FullName(string value)
+    public FirstName(string value)
     {
         Value = value;
     }
 
-    public static implicit operator FullName(string value) => new (value);
+    public static implicit operator FirstName(string value) => new (value);
     public override string ToString() => Value;
 }

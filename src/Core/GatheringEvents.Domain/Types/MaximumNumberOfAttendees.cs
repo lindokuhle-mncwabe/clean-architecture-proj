@@ -12,5 +12,5 @@ public record MaximumNumberOfAttendees
     }
 
     public static implicit operator MaximumNumberOfAttendees(int value) => new (value);
-    public override string ToString() => Value;
+    public override string ToString() => Value.ToString();
 }

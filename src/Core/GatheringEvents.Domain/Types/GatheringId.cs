@@ -12,5 +12,5 @@ public record GatheringId
     }
     
     public static implicit operator GatheringId(Guid value) => new (value);
-    public override string ToString() => Value;
+    public override string ToString() => Value.ToString();
 }

@@ -12,4 +12,5 @@ public record InvitationValidBeforeInHours
     }
 
     public static implicit operator InvitationValidBeforeInHours(int value) => new (value);
-    public override string ToString() => Value;
+    public override string ToString() => Value.ToString();
+}

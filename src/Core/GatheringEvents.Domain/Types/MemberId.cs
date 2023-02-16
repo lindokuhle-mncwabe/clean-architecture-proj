@@ -12,5 +12,5 @@ public record MemberId
     }
 
     public static implicit operator MemberId(Guid value) => new (value);
-    public override string ToString() => Value;
+    public override string ToString() => Value.ToString();
 }

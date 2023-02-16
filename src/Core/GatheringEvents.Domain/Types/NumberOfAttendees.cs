@@ -12,5 +12,5 @@ public record NumberOfAttendees
     }
 
     public static implicit operator NumberOfAttendees(int value) => new (value);
-    public override string ToString() => Value;
+    public override string ToString() => Value.ToString();
 }
