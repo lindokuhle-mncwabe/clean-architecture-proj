@@ -12,5 +12,4 @@ public record FirstName
     }
 
     public static implicit operator FirstName(string value) => new (value);
-    public override string ToString() => Value;
 }

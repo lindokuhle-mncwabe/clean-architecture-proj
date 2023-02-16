@@ -12,5 +12,4 @@ public record Location
     }
 
     public static implicit operator Location(string value) => new (value);
-    public override string ToString() => Value;
 }
