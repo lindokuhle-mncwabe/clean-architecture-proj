@@ -52,7 +52,7 @@ public sealed class Gathering : Entity
     #endregion
 
     #region ~Methods
-    public static Result<Gathering, Error> BuildNew(
+    public static Either<Gathering, Error> BuildNew(
         Guid id,
         Member owner,
         GatheringType type,
@@ -76,7 +76,7 @@ public sealed class Gathering : Entity
             case GatheringType.WithFixedNumberOfAttendees:
                 if (maximumNumberOfAttendees is null)
                 {
-                    return Result<Gathering, Error>.Fail(
+                    return Either<Gathering, Error>.Fail(
                         new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(maximumNumberOfAttendees)}`)"), 
                         isUnhandledError: false);
                 }
@@ -85,7 +85,7 @@ public sealed class Gathering : Entity
             case GatheringType.WithExpirationForInvitation:
                 if (invitationValidBeforeInHours is null)
                 {
-                    return Result<Gathering, Error>.Fail(
+                    return Either<Gathering, Error>.Fail(
                         new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(invitationValidBeforeInHours)}`)"),
                         isUnhandledError: false);
                 }
@@ -93,24 +93,24 @@ public sealed class Gathering : Entity
                     gathering.ScheduledAtUtc.AddHours(-invitationValidBeforeInHours.Value);
                 break;
             default:
-                return Result<Gathering, Error>.Fail(
+                return Either<Gathering, Error>.Fail(
                     new Error($"{nameof(ArgumentOutOfRangeException)} (Parameter `{nameof(GatheringType)}`)"), 
                     isUnhandledError: false);
         }
 
-        return Result<Gathering, Error>.Ok(gathering);
+        return Either<Gathering, Error>.Ok(gathering);
     }
     
-    public Result<Invitation, Error> AddNewInvitation(Member member)
+    public Either<Invitation, Error> AddNewInvitation(Member member)
     {
         if (Owner.Id == member.Id) {
-            return Result<Invitation, Error>.Fail(
+            return Either<Invitation, Error>.Fail(
                 new Error($"{nameof(InvalidOperationException)} - cannot invite owner (Parameter `{nameof(Owner)}`)"),
                 isUnhandledError: false);
         }
 
         if (ScheduledAtUtc < DateTime.UtcNow) {
-            return Result<Invitation, Error>.Fail(
+            return Either<Invitation, Error>.Fail(
                 new Error($"{nameof(InvalidOperationException)} - gathering in the past (Parameter `{nameof(ScheduledAtUtc)}`)"),
                 isUnhandledError: false);
         }
@@ -122,7 +122,7 @@ public sealed class Gathering : Entity
 
         _invitations.Add(invitation);
 
-        return Result<Invitation, Error>.Ok(invitation);
+        return Either<Invitation, Error>.Ok(invitation);
     }
 
     public Attendee? AcceptInvitation(Invitation invitation)

@@ -15,10 +15,10 @@ public sealed class SendInvitationHandler
     // Command
     public sealed record SendInvitationCommand(
         Guid MemberId, 
-        Guid GatheringId) : IRequest<Result<Invitation, Error>>;
+        Guid GatheringId) : IRequest<Either<Invitation, Error>>;
 
     // Handler
-    internal sealed class Handler : IRequestHandler<SendInvitationCommand, Result<Invitation, Error>>
+    internal sealed class Handler : IRequestHandler<SendInvitationCommand, Either<Invitation, Error>>
     {
 
         private readonly IMemberRepository _memberRepository;
@@ -41,7 +41,7 @@ public sealed class SendInvitationHandler
             _emailService = emailService;
         }
 
-        public async Task<Result<Invitation, Error>> Handle(SendInvitationCommand request, CancellationToken cancelToken)
+        public async Task<Either<Invitation, Error>> Handle(SendInvitationCommand request, CancellationToken cancelToken)
         {
             var member = 
                 await _memberRepository.GetByIdAsync(
@@ -54,13 +54,13 @@ public sealed class SendInvitationHandler
                     cancelToken);
 
             if (member is null) { 
-                return Result<Invitation, Error>.Fail(
+                return Either<Invitation, Error>.Fail(
                     new Error($"{nameof(ArgumentNullException)} (Parameter `{member}`)"),
                     isUnhandledError: false);
             }
 
             if (gathering is null) {
-                return  Result<Invitation, Error>.Fail(
+                return  Either<Invitation, Error>.Fail(
                     new Error($"{nameof(ArgumentNullException)} (Parameter `{gathering}`)"),
                     isUnhandledError: false);
             }
@@ -75,7 +75,7 @@ public sealed class SendInvitationHandler
 
             await _emailService.SendInvitationEmail(member, gathering, cancelToken);
 
-            return Result<Invitation, Error>.Ok(result.Value);
+            return Either<Invitation, Error>.Ok(result.Value);
         }
     }
 }

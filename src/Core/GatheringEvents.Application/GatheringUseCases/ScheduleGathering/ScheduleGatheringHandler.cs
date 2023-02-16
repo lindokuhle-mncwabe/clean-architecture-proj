@@ -19,10 +19,10 @@ public sealed class ScheduleGatheringHandler
         string Name,
         string? Location,
         int? MaximumNumberOfAttendees,
-        int? InvitationValidBeforeInHours) : IRequest<Result<Gathering, Error>>;
+        int? InvitationValidBeforeInHours) : IRequest<Either<Gathering, Error>>;
 
     // Handler
-    internal sealed class Handler : IRequestHandler<ScheduleGatheringCommand, Result<Gathering, Error>>
+    internal sealed class Handler : IRequestHandler<ScheduleGatheringCommand, Either<Gathering, Error>>
     {
         private readonly IMemberRepository _memberRepository;
         private readonly IGatheringRepository _gatheringRepository;
@@ -38,7 +38,7 @@ public sealed class ScheduleGatheringHandler
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<Gathering, Error>> Handle(ScheduleGatheringCommand request, CancellationToken cancelToken)
+        public async Task<Either<Gathering, Error>> Handle(ScheduleGatheringCommand request, CancellationToken cancelToken)
         {
             var member = 
                 await _memberRepository.GetByIdAsync(
@@ -46,7 +46,7 @@ public sealed class ScheduleGatheringHandler
                     cancelToken); 
 
             if (member is null) {
-                return Result<Gathering, Error>.Fail(
+                return Either<Gathering, Error>.Fail(
                     new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(member)}`)"),
                     isUnhandledError: false);
             }
@@ -67,7 +67,7 @@ public sealed class ScheduleGatheringHandler
             
             await _unitOfWork.SaveChangesAsync(cancelToken);
 
-            return Result<Gathering, Error>.Ok(result.Value);
+            return Either<Gathering, Error>.Ok(result.Value);
         }
     }
 }

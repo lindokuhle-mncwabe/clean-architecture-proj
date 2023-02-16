@@ -14,10 +14,10 @@ public sealed class AcceptInvitationHandler
 {
     // Command
     public sealed record AcceptInvitationCommand(
-        Guid InvitationId): IRequest<Result<Attendee, Error>>;
+        Guid InvitationId): IRequest<Either<Attendee, Error>>;
 
     // Handler
-    internal sealed class Handler : IRequestHandler<AcceptInvitationCommand, Result<Attendee, Error>>
+    internal sealed class Handler : IRequestHandler<AcceptInvitationCommand, Either<Attendee, Error>>
     {
         private readonly IAttendeeRepository _attendeeRepository;
         private readonly IMemberRepository _memberRepository;
@@ -42,7 +42,7 @@ public sealed class AcceptInvitationHandler
             _emailService = emailService;
         }
 
-        public async Task<Result<Attendee, Error>> Handle(
+        public async Task<Either<Attendee, Error>> Handle(
             AcceptInvitationCommand request, 
             CancellationToken cancellationToken)
         {
@@ -52,13 +52,13 @@ public sealed class AcceptInvitationHandler
                     cancellationToken);
 
             if (invitation is null) { 
-                return Result<Attendee, Error>.Fail(
+                return Either<Attendee, Error>.Fail(
                     new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(invitation)}`)"),
                     isUnhandledError: false);
             }
 
             if (invitation.Status != InvitationStatus.Pending){
-                return Result<Attendee, Error>.Fail(
+                return Either<Attendee, Error>.Fail(
                     new Error($"{nameof(InvalidOperationException)} (Parameter `{nameof(InvitationStatus)}:{invitation.Status}`)"),
                     isUnhandledError: false);
             }
@@ -74,13 +74,13 @@ public sealed class AcceptInvitationHandler
                     cancellationToken);
 
             if (member is null) { 
-                return Result<Attendee, Error>.Fail(
+                return Either<Attendee, Error>.Fail(
                     new Error($"{nameof(ArgumentNullException)} (Parameter `{member}`)"),
                     isUnhandledError: false); 
             }
             
             if (gathering is null) {
-                return Result<Attendee, Error>.Fail(
+                return Either<Attendee, Error>.Fail(
                     new Error($"{nameof(ArgumentNullException)} (Parameter `{gathering}`)"),
                     isUnhandledError: false);
             }
@@ -88,7 +88,7 @@ public sealed class AcceptInvitationHandler
             var attendee = gathering.AcceptInvitation(invitation);
             
             if (attendee is null) {
-                return Result<Attendee, Error>.Fail(
+                return Either<Attendee, Error>.Fail(
                     new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(attendee)}`)"),
                     isUnhandledError: false);
             }
@@ -101,7 +101,7 @@ public sealed class AcceptInvitationHandler
                 await _emailService.SendInvitationAcceptedEmail(gathering, cancellationToken); 
             } 
 
-            return Result<Attendee, Error>.Ok(attendee);
+            return Either<Attendee, Error>.Ok(attendee);
         }
     }
 }
