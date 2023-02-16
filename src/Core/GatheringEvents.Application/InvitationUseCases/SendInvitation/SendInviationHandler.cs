@@ -67,7 +67,7 @@ public sealed class SendInvitationHandler
 
             var result = gathering.AddNewInvitation(member);    
 
-            if (!result.IsSuccess) return result;
+            if (result.Value is null) return result;
 
             _invitationRepository.Add(result.Value);
 

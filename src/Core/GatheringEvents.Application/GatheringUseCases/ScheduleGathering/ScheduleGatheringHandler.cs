@@ -61,7 +61,7 @@ public sealed class ScheduleGatheringHandler
                 request.MaximumNumberOfAttendees,
                 request.InvitationValidBeforeInHours);
 
-            if (!result.IsSuccess) return result;
+            if (result.Value is null) return result;
             
             _gatheringRepository.Add(result.Value);
             
