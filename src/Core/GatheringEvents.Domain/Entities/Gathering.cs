@@ -47,8 +47,8 @@ public sealed class Gathering : Entity
     public int? InvitationValidBeforeInHours { get; private set; }
     public DateTime? InvitationExpireAtUtc { get; private set; }
     public int NumberOfAttendees { get; set; }
-    public IReadOnlyCollection<Attendee> Attendees  => _attendees;
-    public IReadOnlyCollection<Invitation> Invitations => _invitations;    
+    public IReadOnlyCollection<Attendee> Attendees  => _attendees.AsReadOnly();
+    public IReadOnlyCollection<Invitation> Invitations => _invitations.AsReadOnly();    
     #endregion
 
     #region ~Methods
