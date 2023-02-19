@@ -1,25 +1,23 @@
 using System;
+using System.Collections.Generic;
+using GatheringEvents.Domain.Events;
 
 namespace GatheringEvents.Domain.Types;
 
 public abstract class Entity : IEquatable<Entity>
 {
-    #region ~Constructor
-    
+    #region ~Constructors
     protected Entity(Guid id)
     {
         Id = id;
     }
-    
     #endregion
    
     #region ~Props
     public Guid Id { get; private init; }
-
     #endregion
 
     #region ~Operators
-
     public static bool operator ==(Entity? first, Entity? second)
     {
         return first is not null && second is not null && first.Equals(second);
@@ -29,11 +27,9 @@ public abstract class Entity : IEquatable<Entity>
     {
         return !(first == second);
     }
-
     #endregion
 
-    #region Methods
-
+    #region ~MethodOverrides
     public override bool Equals(object? obj)
     {
         if (obj is null ) {
@@ -68,6 +64,25 @@ public abstract class Entity : IEquatable<Entity>
     {
         return Id.GetHashCode() * 41;
     }
+    #endregion
 
+    #region ~DomainEvents
+    private readonly List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
+    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+
+    protected void AddDomainEvent(IDomainEvent eventItem)
+    {
+        _domainEvents.Add(eventItem);
+    }
+
+    protected void RemoveDomainEvent(IDomainEvent eventItem)
+    {
+        _domainEvents?.Remove(eventItem);
+    }
+
+    public void ClearDomainEvents()
+    {
+        _domainEvents?.Clear();
+    }
     #endregion
 }

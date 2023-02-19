@@ -7,8 +7,7 @@ namespace GatheringEvents.Domain.Entities;
 
 public sealed class Gathering : Entity
 {
-    #region ~Construtor
-
+    #region ~Construtors
     private Gathering(
         Guid id,
         Member owner,
@@ -28,7 +27,6 @@ public sealed class Gathering : Entity
         MaximumNumberOfAttendees = maximumNumberOfAttendees;
         InvitationValidBeforeInHours = invitationValidBeforeInHours;
     }
-    
     #endregion
    
     #region ~Fields
@@ -37,7 +35,6 @@ public sealed class Gathering : Entity
     #endregion
 
     #region ~Props
-    
     public Member Owner { get; private set; }
     public GatheringType Type { get; private set; }
     public string Name { get; private set; } = string.Empty;
