@@ -8,15 +8,12 @@ public sealed class Member : Entity
 {
     public Member(
         Guid id,
-        string firstName,
-        string lastName,
-        string email) : base(id)
+        MemberName memberName,
+        Email email) : base(id)
     {
-        FirstName = firstName;
-        LastName = lastName;
+        MemberName = memberName;
         Email = email;
     }
-    public string FirstName { get; set; }    
-    public string LastName { get; set; }
-    public string Email { get; set; }
+    public MemberName MemberName { get; }
+    public Email Email { get; }
 }
