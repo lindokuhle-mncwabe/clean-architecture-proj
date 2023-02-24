@@ -17,7 +17,7 @@ public sealed class Member : Entity
         MemberEmail = memberEmail;
     }
     
-    private static Either<Member, Error> BuildNew(
+    public static Either<Member, Error> BuildNew(
         string firstName,
         string lastName,
         string email)
