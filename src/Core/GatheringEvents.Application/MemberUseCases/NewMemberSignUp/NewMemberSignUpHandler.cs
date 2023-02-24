@@ -38,17 +38,12 @@ public sealed class NewMemberSignUpHandler
                 request.LastName,
                 request.Email);
 
-            if (member.Error is not null)
-            {
-                return Either<Member, Error>.Fail(
-                    error: member.Error,
-                    isUnhandledError: member.IsUnhandledError);
-            }
+            if (member.Value is null) return member;
 
-            _memberRepository.Add(member.Value!);
+            _memberRepository.Add(member.Value);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Either<Member, Error>.Ok(member.Value!);
+            return Either<Member, Error>.Ok(member.Value);
         }
     }
 }
