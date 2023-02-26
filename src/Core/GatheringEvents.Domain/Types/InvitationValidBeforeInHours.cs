@@ -2,7 +2,7 @@ using System;
 
 namespace GatheringEvents.Domain.Types;
 
-public record InvitationValidBeforeInHours
+public sealed record InvitationValidBeforeInHours
 {
     public int Value { get; set; }
 

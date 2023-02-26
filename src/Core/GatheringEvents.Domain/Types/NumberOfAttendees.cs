@@ -2,7 +2,7 @@ using System;
 
 namespace GatheringEvents.Domain.Types;
 
-public record NumberOfAttendees
+public sealed record NumberOfAttendees
 {
     public int Value { get; set; }
 

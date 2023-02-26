@@ -2,7 +2,7 @@ using System;
 
 namespace GatheringEvents.Domain.Types;
 
-public record Location
+public sealed record Location
 {
     public string Value { get; set; }
 

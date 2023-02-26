@@ -2,7 +2,7 @@ using System;
 
 namespace GatheringEvents.Domain.Types;
 
-public record MemberEmail
+public sealed record MemberEmail
 {
     public string Value { get; }
 
@@ -13,12 +13,12 @@ public record MemberEmail
 
     public static Either<MemberEmail, Error> BuildNew(string email)
     {
-        if (email is null)
-        {
-            return Either<MemberEmail, Error>.Fail(
-                        Error.BuildNewArgumentNullException(
-                            $"{nameof(MemberEmail)}.{nameof(BuildNew)}", nameof(email)),
-                        isUnhandledError: false);
+        if (email is null) {
+            return 
+                Either<MemberEmail, Error>.Fail(
+                    Error.BuildNewArgumentNullException( 
+                        operation: $"{nameof(MemberEmail)}.{nameof(BuildNew)}", 
+                        parameterName: nameof(email)));
         }
         
         var memberEmail =  new MemberEmail(email);

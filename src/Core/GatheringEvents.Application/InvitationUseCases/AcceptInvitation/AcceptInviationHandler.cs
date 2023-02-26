@@ -53,14 +53,16 @@ public sealed class AcceptInvitationHandler
 
             if (invitation is null) { 
                 return Either<Attendee, Error>.Fail(
-                    Error.BuildNewArgumentNullException(nameof(AcceptInvitationCommand), nameof(invitation)),
-                    isUnhandledError: false);
+                    Error.BuildNewArgumentNullException(
+                        operation: nameof(AcceptInvitationCommand), 
+                        parameterName: nameof(invitation)));
             }
 
-            if (invitation.Status != InvitationStatus.Pending){
+            if (invitation.Status != InvitationStatus.Pending) {
                 return Either<Attendee, Error>.Fail(
-                    Error.BuildNewInvalidOperationException(nameof(AcceptInvitationCommand), invitation.Status),
-                    isUnhandledError: false);
+                    Error.BuildNewInvalidOperationException(
+                        operation: nameof(AcceptInvitationCommand), 
+                        status: invitation.Status));
             }
 
             var member = 
@@ -75,22 +77,25 @@ public sealed class AcceptInvitationHandler
 
             if (member is null) { 
                 return Either<Attendee, Error>.Fail(
-                    Error.BuildNewArgumentNullException(nameof(AcceptInvitationCommand), nameof(member)),
-                    isUnhandledError: false); 
+                    Error.BuildNewArgumentNullException(
+                        operation: nameof(AcceptInvitationCommand), 
+                        parameterName: nameof(member))); 
             }
             
             if (gathering is null) {
                 return Either<Attendee, Error>.Fail(
-                    Error.BuildNewArgumentNullException(nameof(AcceptInvitationCommand), nameof(gathering)),
-                    isUnhandledError: false);
+                    Error.BuildNewArgumentNullException(
+                        operation: nameof(AcceptInvitationCommand), 
+                        parameterName: nameof(gathering)));
             }
             
             var attendee = gathering.AcceptInvitation(invitation);
             
             if (attendee is null) {
                 return Either<Attendee, Error>.Fail(
-                    Error.BuildNewArgumentNullException(nameof(AcceptInvitationCommand), nameof(attendee)),
-                    isUnhandledError: false);
+                    Error.BuildNewArgumentNullException(
+                        operation: nameof(AcceptInvitationCommand), 
+                        parameterName: nameof(attendee)));
             }
 
             _attendeeRepository.Add(attendee); 

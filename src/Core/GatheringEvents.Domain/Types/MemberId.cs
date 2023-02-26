@@ -2,7 +2,7 @@ using System;
 
 namespace GatheringEvents.Domain.Types;
 
-public record MemberId
+public sealed record MemberId
 {
     public Guid Value { get; set; }
     

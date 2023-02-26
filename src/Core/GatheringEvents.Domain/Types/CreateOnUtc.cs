@@ -2,7 +2,7 @@ using System;
 
 namespace GatheringEvents.Domain.Types;
 
-public record CreatedOnUtc
+public sealed record CreatedOnUtc
 {
     public DateTime Value { get; set; }
     public CreatedOnUtc(DateTime value)

@@ -2,7 +2,7 @@ using System;
 
 namespace GatheringEvents.Domain.Entities;
 
-public class Attendee
+public sealed class Attendee
 {
     internal Attendee(Invitation invitation)
     {

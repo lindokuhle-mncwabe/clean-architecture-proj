@@ -55,14 +55,16 @@ public sealed class SendInvitationHandler
 
             if (member is null) { 
                 return Either<Invitation, Error>.Fail(
-                    Error.BuildNewArgumentNullException(nameof(SendInvitationCommand), nameof(member)),
-                    isUnhandledError: false);
+                    Error.BuildNewArgumentNullException(
+                        operation: nameof(SendInvitationCommand), 
+                        parameterName: nameof(member)));
             }
-
+            
             if (gathering is null) {
                 return  Either<Invitation, Error>.Fail(
-                    Error.BuildNewArgumentNullException(nameof(SendInvitationCommand), nameof(gathering)),
-                    isUnhandledError: false);
+                    Error.BuildNewArgumentNullException(
+                        operation: nameof(SendInvitationCommand), 
+                        parameterName: nameof(gathering)));
             }
 
             var result = gathering.AddNewInvitation(member);    

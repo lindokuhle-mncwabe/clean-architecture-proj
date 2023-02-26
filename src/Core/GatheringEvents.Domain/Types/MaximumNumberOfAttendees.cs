@@ -2,7 +2,7 @@ using System;
 
 namespace GatheringEvents.Domain.Types;
 
-public record MaximumNumberOfAttendees
+public sealed record MaximumNumberOfAttendees
 {
     public int Value { get; set; }
 

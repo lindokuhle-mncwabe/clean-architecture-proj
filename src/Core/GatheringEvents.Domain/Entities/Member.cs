@@ -23,21 +23,14 @@ public sealed class Member : Entity
         string email)
     {
         var buildNameResult = MemberName.BuildNew(firstName, lastName);
-        if (buildNameResult.Error is not null) 
-        {
-            return Either<Member, Error>.Fail(
-                error: buildNameResult.Error,
-                isUnhandledError: buildNameResult.IsUnhandledError);
+        if (buildNameResult.Error is not null) {
+            return Either<Member, Error>.Fail(error: buildNameResult.Error);
         }
 
         var buildEmailResult = MemberEmail.BuildNew(email);
-        if (buildEmailResult.Error is not null)
-        {
-            return Either<Member, Error>.Fail(
-                error: buildEmailResult.Error,
-                isUnhandledError: buildEmailResult.IsUnhandledError);
+        if (buildEmailResult.Error is not null) {
+            return Either<Member, Error>.Fail(error: buildEmailResult.Error);
         }
-
 
         var member = new Member(
             id: Guid.NewGuid(),
