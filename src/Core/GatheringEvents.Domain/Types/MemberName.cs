@@ -20,13 +20,15 @@ public record MemberName
         if (firstName is null)
         {
             return Either<MemberName, Error>.Fail(
-                        error: new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(firstName)}`)"),
+                        Error.BuildNewArgumentNullException(
+                            $"{nameof(MemberName)}.{nameof(BuildNew)}", nameof(firstName)),
                         isUnhandledError: false);
         }
         if (lastName is null)
         {
             return Either<MemberName, Error>.Fail(
-                        error: new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(lastName)}`)"),
+                        Error.BuildNewArgumentNullException( 
+                            $"{nameof(MemberName)}.{BuildNew}", nameof(lastName)),
                         isUnhandledError: false);
         }
 

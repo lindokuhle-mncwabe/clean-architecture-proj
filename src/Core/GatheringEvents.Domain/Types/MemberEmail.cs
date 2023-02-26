@@ -16,7 +16,8 @@ public record MemberEmail
         if (email is null)
         {
             return Either<MemberEmail, Error>.Fail(
-                        error: new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(email)}`)"),
+                        Error.BuildNewArgumentNullException(
+                            $"{nameof(MemberEmail)}.{nameof(BuildNew)}", nameof(email)),
                         isUnhandledError: false);
         }
         

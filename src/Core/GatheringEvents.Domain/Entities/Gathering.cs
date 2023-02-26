@@ -74,7 +74,9 @@ public sealed class Gathering : Entity
                 if (maximumNumberOfAttendees is null)
                 {
                     return Either<Gathering, Error>.Fail(
-                        new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(maximumNumberOfAttendees)}`)"), 
+                        Error.BuildNewArgumentNullException(
+                            $"{nameof(Gathering)}.{nameof(BuildNew)}", nameof(maximumNumberOfAttendees)
+                        ), 
                         isUnhandledError: false);
                 }
                 gathering.MaximumNumberOfAttendees = maximumNumberOfAttendees;
@@ -83,7 +85,8 @@ public sealed class Gathering : Entity
                 if (invitationValidBeforeInHours is null)
                 {
                     return Either<Gathering, Error>.Fail(
-                        new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(invitationValidBeforeInHours)}`)"),
+                        Error.BuildNewArgumentNullException( 
+                            $"{nameof(Gathering)}.{nameof(BuildNew)}", nameof(invitationValidBeforeInHours)),
                         isUnhandledError: false);
                 }
                 gathering.InvitationExpireAtUtc =
@@ -91,7 +94,8 @@ public sealed class Gathering : Entity
                 break;
             default:
                 return Either<Gathering, Error>.Fail(
-                    new Error($"{nameof(ArgumentOutOfRangeException)} (Parameter `{nameof(GatheringType)}`)"), 
+                    Error.BuildNewArgumentOutOfRangeException(
+                         $"{nameof(Gathering)}.{nameof(BuildNew)}", nameof(GatheringType)),
                     isUnhandledError: false);
         }
 
@@ -102,13 +106,15 @@ public sealed class Gathering : Entity
     {
         if (Owner.Id == member.Id) {
             return Either<Invitation, Error>.Fail(
-                new Error($"{nameof(InvalidOperationException)} - cannot invite owner (Parameter `{nameof(Owner)}`)"),
+                Error.BuildNewInvalidOperationException(
+                    nameof(AddNewInvitation), $"{nameof(Owner)}Id is same as MemberId."),
                 isUnhandledError: false);
         }
 
         if (ScheduledAtUtc < DateTime.UtcNow) {
             return Either<Invitation, Error>.Fail(
-                new Error($"{nameof(InvalidOperationException)} - gathering in the past (Parameter `{nameof(ScheduledAtUtc)}`)"),
+                Error.BuildNewInvalidOperationException(
+                    nameof(AddNewInvitation), $"{nameof(ScheduledAtUtc)} is in the past."),
                 isUnhandledError: false);
         }
 

@@ -1,6 +1,6 @@
 namespace GatheringEvents.Domain.Types;
 
-public enum ErrorType
+public enum ErrorCode
 {
     // Request succeeded and that the requested information is in the response. 
     Ok = 200,

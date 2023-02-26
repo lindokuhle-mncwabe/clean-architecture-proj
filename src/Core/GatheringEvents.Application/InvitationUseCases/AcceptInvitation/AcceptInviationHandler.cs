@@ -53,13 +53,13 @@ public sealed class AcceptInvitationHandler
 
             if (invitation is null) { 
                 return Either<Attendee, Error>.Fail(
-                    new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(invitation)}`)"),
+                    Error.BuildNewArgumentNullException(nameof(AcceptInvitationCommand), nameof(invitation)),
                     isUnhandledError: false);
             }
 
             if (invitation.Status != InvitationStatus.Pending){
                 return Either<Attendee, Error>.Fail(
-                    new Error($"{nameof(InvalidOperationException)} (Parameter `{nameof(InvitationStatus)}:{invitation.Status}`)"),
+                    Error.BuildNewInvalidOperationException(nameof(AcceptInvitationCommand), invitation.Status),
                     isUnhandledError: false);
             }
 
@@ -75,13 +75,13 @@ public sealed class AcceptInvitationHandler
 
             if (member is null) { 
                 return Either<Attendee, Error>.Fail(
-                    new Error($"{nameof(ArgumentNullException)} (Parameter `{member}`)"),
+                    Error.BuildNewArgumentNullException(nameof(AcceptInvitationCommand), nameof(member)),
                     isUnhandledError: false); 
             }
             
             if (gathering is null) {
                 return Either<Attendee, Error>.Fail(
-                    new Error($"{nameof(ArgumentNullException)} (Parameter `{gathering}`)"),
+                    Error.BuildNewArgumentNullException(nameof(AcceptInvitationCommand), nameof(gathering)),
                     isUnhandledError: false);
             }
             
@@ -89,7 +89,7 @@ public sealed class AcceptInvitationHandler
             
             if (attendee is null) {
                 return Either<Attendee, Error>.Fail(
-                    new Error($"{nameof(ArgumentNullException)} (Parameter `{nameof(attendee)}`)"),
+                    Error.BuildNewArgumentNullException(nameof(AcceptInvitationCommand), nameof(attendee)),
                     isUnhandledError: false);
             }
 
