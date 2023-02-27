@@ -64,14 +64,15 @@ public abstract class Entity : IEquatable<Entity>
         return Id.GetHashCode() * 41;
     }
 
+
     // DomainEventsMethods
-    protected void AddDomainEvent(IDomainEvent eventItem)
+    protected void RaiseDomainEvent(IDomainEvent domainEvent)
     {
-        _domainEvents.Add(eventItem);
+        _domainEvents.Add(domainEvent);
     }
-    protected void RemoveDomainEvent(IDomainEvent eventItem)
+    protected void RemoveDomainEvent(IDomainEvent domainEvent)
     {
-        _domainEvents?.Remove(eventItem);
+        _domainEvents?.Remove(domainEvent);
     }
     protected void ClearDomainEvents()
     {

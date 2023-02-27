@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using GatheringEvents.Domain.Events;
 using GatheringEvents.Domain.Types;
 
 namespace GatheringEvents.Domain.Entities;
@@ -140,7 +140,9 @@ public sealed class Gathering : Entity
         }        
 
         var attendee = invitation.Accept();           
-           
+        
+        RaiseDomainEvent(new InvitationAcceptedDomainEvent(invitation.Id, invitation.GatheringId));
+        
         _attendees.Add(attendee);
         NumberOfAttendees++;
 

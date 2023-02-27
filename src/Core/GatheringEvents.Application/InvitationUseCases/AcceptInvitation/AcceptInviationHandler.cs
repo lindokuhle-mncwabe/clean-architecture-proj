@@ -24,22 +24,20 @@ public sealed class AcceptInvitationHandler
         private readonly IGatheringRepository _gatheringRepository;
         private readonly IInvitationRepository _invitationRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IEmailService _emailService;
+        
 
         public Handler(
             IAttendeeRepository attendeeRepository,
             IMemberRepository memberRepository,
             IGatheringRepository gatheringRepository,
             IInvitationRepository invitationRepository,
-            IUnitOfWork unitOfWork,
-            IEmailService emailService)
+            IUnitOfWork unitOfWork)
         {
             _attendeeRepository = attendeeRepository;
             _memberRepository = memberRepository;
             _gatheringRepository = gatheringRepository;
             _invitationRepository = invitationRepository;
             _unitOfWork = unitOfWork;
-            _emailService = emailService;
         }
 
         public async Task<Either<Attendee, Error>> Handle(
@@ -101,10 +99,6 @@ public sealed class AcceptInvitationHandler
             _attendeeRepository.Add(attendee); 
             
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-            if (invitation.Status == InvitationStatus.Accepted) {
-                await _emailService.SendInvitationAcceptedEmail(gathering, cancellationToken); 
-            } 
 
             return Either<Attendee, Error>.Ok(attendee);
         }
