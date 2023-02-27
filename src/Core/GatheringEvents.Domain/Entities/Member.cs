@@ -6,8 +6,11 @@ namespace GatheringEvents.Domain.Entities;
 
 public sealed class Member : Entity
 {
+    // Props
     public MemberName MemberName { get; }
     public MemberEmail MemberEmail { get; }
+
+    // Constructor
     private Member(
         Guid id,
         MemberName memberName,
@@ -17,6 +20,7 @@ public sealed class Member : Entity
         MemberEmail = memberEmail;
     }
     
+    // StaticMethod
     public static Either<Member, Error> BuildNew(
         string firstName,
         string lastName,

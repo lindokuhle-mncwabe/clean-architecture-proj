@@ -4,12 +4,15 @@ namespace GatheringEvents.Domain.Types;
 
 public sealed record Error
 {
+    // Field
+    private const string msg = "cannot execute";
+
+    // Props
     public string Message { get; }
     public ErrorCode ErrorCode { get; }
     public bool IsUnhandledError { get; }
-    
-    private const string msg = "cannot execute";
 
+    // Constructor
     private Error(string message, ErrorCode errorCode, bool isUnhandledError = false)
     {
         Message = message;
@@ -17,6 +20,7 @@ public sealed record Error
         IsUnhandledError = isUnhandledError;
     }
 
+    // StaticMethods
     public static Error BuildNewArgumentNullException(string operation, string parameterName)
     {
         return new Error(
@@ -24,7 +28,6 @@ public sealed record Error
             ErrorCode.BadRequest
         );
     } 
-
     public static Error BuildNewInvalidOperationException(string operation, InvitationStatus status)
     {
         return new Error(
@@ -32,15 +35,13 @@ public sealed record Error
             ErrorCode.BadRequest
         );
     }
-
-     public static Error BuildNewInvalidOperationException(string operation, string parameterName)
-     {
+    public static Error BuildNewInvalidOperationException(string operation, string parameterName)
+    {
         return new Error(
             $"{nameof(InvalidOperationException)}: {msg} {operation} - (Parameter `{parameterName}`)",
             ErrorCode.BadRequest
         );
-     }
-
+    }
     public static Error BuildNewArgumentOutOfRangeException(string operation, string parameterName)
     {
         return new Error(
@@ -48,7 +49,6 @@ public sealed record Error
             ErrorCode.BadRequest
         );
     }
-
     public static Error BuildNewUnhandledException(string operation, string obj, Exception exception)
     {
         return new Error(

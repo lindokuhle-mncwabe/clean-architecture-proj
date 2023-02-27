@@ -7,34 +7,11 @@ namespace GatheringEvents.Domain.Entities;
 
 public sealed class Gathering : Entity
 {
-    #region ~Construtors
-    private Gathering(
-        Guid id,
-        Member owner,
-        GatheringType type,
-        DateTime scheduledAtUtc,
-        string name,
-        string location,
-        int? maximumNumberOfAttendees,
-        int? invitationValidBeforeInHours)
-        : base(id)
-    {
-        Owner = owner;
-        Type = type;
-        ScheduledAtUtc = scheduledAtUtc;
-        Name = name;
-        Location = location;
-        MaximumNumberOfAttendees = maximumNumberOfAttendees;
-        InvitationValidBeforeInHours = invitationValidBeforeInHours;
-    }
-    #endregion
-   
-    #region ~Fields
+    // Fields
     private readonly List<Invitation> _invitations = new();
     private readonly List<Attendee> _attendees = new();
-    #endregion
 
-    #region ~Props
+    // Props
     public Member Owner { get; private set; }
     public GatheringType Type { get; private set; }
     public string Name { get; private set; } = string.Empty;
@@ -46,9 +23,28 @@ public sealed class Gathering : Entity
     public int NumberOfAttendees { get; set; }
     public IReadOnlyCollection<Attendee> Attendees  => _attendees.AsReadOnly();
     public IReadOnlyCollection<Invitation> Invitations => _invitations.AsReadOnly();    
-    #endregion
 
-    #region ~Methods
+   // Construtor
+    private Gathering(
+        Guid id,
+        Member owner,
+        GatheringType type,
+        DateTime scheduledAtUtc,
+        string name,
+        string location,
+        int? maximumNumberOfAttendees,
+        int? invitationValidBeforeInHours): base(id)
+    {
+        Owner = owner;
+        Type = type;
+        ScheduledAtUtc = scheduledAtUtc;
+        Name = name;
+        Location = location;
+        MaximumNumberOfAttendees = maximumNumberOfAttendees;
+        InvitationValidBeforeInHours = invitationValidBeforeInHours;
+    }
+
+    // StaticMethod
     public static Either<Gathering, Error> BuildNew(
         Guid id,
         Member owner,
@@ -101,6 +97,7 @@ public sealed class Gathering : Entity
         return Either<Gathering, Error>.Ok(gathering);
     }
     
+    // NonStaticMethods
     public Either<Invitation, Error> AddNewInvitation(Member member)
     {
         if (Owner.Id == member.Id) {
@@ -126,7 +123,6 @@ public sealed class Gathering : Entity
 
         return Either<Invitation, Error>.Ok(invitation);
     }
-
     public Attendee? AcceptInvitation(Invitation invitation)
     {
         var fullyBooked = 
@@ -150,5 +146,4 @@ public sealed class Gathering : Entity
 
         return attendee;
     }
-    #endregion
 }

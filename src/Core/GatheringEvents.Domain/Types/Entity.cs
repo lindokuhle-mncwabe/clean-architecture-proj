@@ -6,30 +6,31 @@ namespace GatheringEvents.Domain.Types;
 
 public abstract class Entity : IEquatable<Entity>
 {
-    #region ~Constructors
+    // Field
+    private readonly List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
+   
+    // Props
+    public Guid Id { get; private init; }
+    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+
+    //  Constructor
     protected Entity(Guid id)
     {
         Id = id;
     }
-    #endregion
-   
-    #region ~Props
-    public Guid Id { get; private init; }
-    #endregion
 
-    #region ~Operators
+    // Operators
     public static bool operator ==(Entity? first, Entity? second)
     {
         return first is not null && second is not null && first.Equals(second);
     }    
-
     public static bool operator !=(Entity? first, Entity? second)
     {
         return !(first == second);
     }
-    #endregion
 
-    #region ~MethodOverrides
+
+    // MethodOverrides
     public override bool Equals(object? obj)
     {
         if (obj is null ) {
@@ -46,7 +47,6 @@ public abstract class Entity : IEquatable<Entity>
 
         return entity.Id == Id;
     }
-
     public bool Equals(Entity? other)
     {
         if (other is null){
@@ -59,30 +59,22 @@ public abstract class Entity : IEquatable<Entity>
 
         return other.Id == Id;       
     }
-
     public override int GetHashCode()
     {
         return Id.GetHashCode() * 41;
     }
-    #endregion
 
-    #region ~DomainEvents
-    private readonly List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
-    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
-
+    // DomainEventsMethods
     protected void AddDomainEvent(IDomainEvent eventItem)
     {
         _domainEvents.Add(eventItem);
     }
-
     protected void RemoveDomainEvent(IDomainEvent eventItem)
     {
         _domainEvents?.Remove(eventItem);
     }
-
-    public void ClearDomainEvents()
+    protected void ClearDomainEvents()
     {
         _domainEvents?.Clear();
     }
-    #endregion
 }

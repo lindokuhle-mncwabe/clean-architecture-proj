@@ -6,7 +6,14 @@ namespace GatheringEvents.Domain.Entities;
 
 public sealed class Invitation : Entity
 {
-    #region ~Construtors
+    // Props
+    public Guid GatheringId { get; private set; }
+    public Guid MemberId { get; private set; }
+    public InvitationStatus Status { get; private set; }
+    public DateTime CreatedOnUtc { get; private set; }
+    public DateTime? UpdatedOnUtc { get; private set; }
+
+    // Construtor
     internal Invitation(    
         Guid id,
         Member member,
@@ -17,23 +24,13 @@ public sealed class Invitation : Entity
         Status = InvitationStatus.Pending;
         CreatedOnUtc = DateTime.Now;
     }
-    #endregion
 
-    #region ~Props
-    public Guid GatheringId { get; private set; }
-    public Guid MemberId { get; private set; }
-    public InvitationStatus Status { get; private set; }
-    public DateTime CreatedOnUtc { get; private set; }
-    public DateTime? UpdatedOnUtc { get; private set; }
-    #endregion
-
-    #region ~Methods
+    // Methods
     internal void Expire()
     {
         Status = InvitationStatus.Expired;
         UpdatedOnUtc = DateTime.UtcNow;
     }
-
     internal Attendee Accept()
     {
         Status = InvitationStatus.Accepted;
@@ -43,5 +40,4 @@ public sealed class Invitation : Entity
 
         return attendee;
     }
-    #endregion
 }
