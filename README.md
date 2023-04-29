@@ -124,3 +124,7 @@ DDD <br/>
 [R.C. Martin Post](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 
 [![Robert C. Martin Image](https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg)]
+
+[Onion Archecture Post](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/)
+
+[![Onion Img](https://i0.wp.com/jeffreypalermo.com/wp-content/uploads/2018/06/image257b0257d255b59255d.png?resize=366%2C259&ssl=1)]
