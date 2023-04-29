@@ -113,7 +113,7 @@ Here is the folder structure I like to use:
 Sometimes, I will move the Presentation layer away from the actual Web API project. I do this to isolate the Controllers and enforce stricter constraints. You don't have to do this if it is too complicated for you.
 
 DDD, Hexagonal, Onion, Clean and CQRS <br/>
-(![Uploading image.png…]())
+[!(https://www.google.com/url?sa=i&url=https%3A%2F%2Fherbertograca.com%2F2017%2F11%2F16%2Fexplicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together%2F&psig=AOvVaw0xzAFm72435xtN8_TmIduN&ust=1682881495295000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCIia55_kz_4CFQAAAAAdAAAAABAE)]
 
 [Source](https://www.milanjovanovic.tech/blog/clean-architecture-folder-structure)
 DDD
